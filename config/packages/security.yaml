@@ -3,16 +3,52 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\AdminUser:
+            algorithm: auto
+        App\Entity\User:
+            algorithm: auto
+
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        admin_user_provider:
+            entity:
+                class: App\Entity\AdminUser
+                property: email
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        admin:
+            pattern: ^/admin
+            lazy: true
+            #            anonymous: false
+            provider: admin_user_provider
+            custom_authenticator: App\Modules\Admin\Security\AdminAuthenticator
+            entry_point: App\Modules\Admin\Security\AdminAuthenticationEntryPoint
+            logout:
+                path: admin.session.logout
+
+        storefront_auth:
+            pattern: ^/account
+            lazy: true
+            #            anonymous: false
+            provider: app_user_provider
+            custom_authenticator: App\Modules\Storefront\Security\UserAuthenticator
+            entry_point: App\Modules\Storefront\Security\UserAuthenticationEntryPoint
+            logout:
+                path: app.session.logout
+
         main:
             lazy: true
-            provider: users_in_memory
+            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -20,11 +56,17 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin/auth, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/account, roles: ROLE_STORE_USER }
+        - { path: ^/, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

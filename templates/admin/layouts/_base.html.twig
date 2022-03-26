@@ -1,0 +1,64 @@
+{% set res = "theme_assets/" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {% endblock %} | Admin | SpeaKommerce</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ asset(res ~ 'plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- fullCalendar -->
+    <link rel="stylesheet" href="{{ asset(res ~ 'plugins/fullcalendar/main.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset(res ~ 'dist/css/adminlte.min.css') }}">
+
+    {% block styles %}
+        {{ encore_entry_link_tags('app') }}
+        {# Insert custom styles here... #}
+    {% endblock %}
+</head>
+<body class="hold-transition sidebar-mini">
+
+    {# Navbar #}
+    {% include 'admin/partials/shared/header/_navbar.html.twig' %}
+
+    {# Sidebar #}
+    {% include 'admin/partials/shared/header/_sidebar.html.twig' %}
+
+    <div class="wrapper">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+
+            {% include 'admin/partials/shared/header/_breadcrumb.html.twig' %}
+
+            {% include 'admin/partials/shared/header/_alerts.html.twig' %}
+
+            {% block body %}
+                {# Main Content goes here... #}
+            {% endblock %}
+        </div>
+
+        {% include 'admin/partials/shared/footer/_footer.html.twig' %}
+
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="{{ asset(res ~ 'plugins/jquery/jquery.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ asset(res ~ 'plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- jQuery UI -->
+    <script src="{{ asset(res ~ 'plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+    <!-- AdminLTE App -->
+    <script src="{{ asset(res ~ 'dist/js/adminlte.min.js') }}"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="{{ asset(res ~ 'dist/js/demo.js') }}"></script>
+    {% block scripts %}
+        {{ encore_entry_script_tags('app') }}
+        {# Insert Custom Scripts here... #}
+    {% endblock %}
+</body>
+</html>

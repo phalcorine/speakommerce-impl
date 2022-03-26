@@ -1,0 +1,105 @@
+{% extends 'admin/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Customers</h3>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th style="width: 10%">
+                            Token
+                        </th>
+                        <th>
+                            Full Name
+                        </th>
+                        <th>
+                            Date Registered
+                        </th>
+                        <th>
+                            Loans Acquired
+                        </th>
+                        <th>
+                            Personal Loan Limit
+                        </th>
+                        <th>
+                            Business Loan Limit
+                        </th>
+                        <th>
+                            Action(s)
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set indexer = 0 %}
+                    {% for customer in customers %}
+                        {% set indexer = indexer + 1 %}
+                        <tr>
+                            <td>
+                                {{ indexer }}
+                            </td>
+                            <td>
+                                {{ customer.token }}
+                            </td>
+                            <td>
+                                {{ customer.userData.bio.fullName }}
+                            </td>
+                            <td>
+                                {{ datePlugin.normalizedDate(customer.createdAt) }}
+                            </td>
+                            <td>
+                                {{ customer.loans.count }}
+                            </td>
+                            <td>
+                                {{ '₦' ~ customer.userData.currentPersonalLoanLimit|number_format }}
+                            </td>
+                            <td>
+                                {% if customer.canApplyBusiness %}
+                                    {{ '₦' ~ customer.userData.currentBusinessLoanLimit|number_format }}
+                                {% else %}
+                                    {{ 'Not Eligible' }}
+                                {% endif %}
+                            </td>
+                            <td class="project-actions">
+                                <a class="btn btn-primary btn-sm" href="{{ path('admin.customers.details', { token: customer.token }) }}">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <div align="center" class="align-content-center">
+                            <p> You have no registered users yet...
+                                {#<a href="{{ path('app.portal.courses.index') }}" class="btn btn-primary btn-sm">
+                                        View Courses
+                                    </a>#}
+                                <span class="fa fa-sad-tear"></span>
+                            </p>
+                        </div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+
+{% endblock %}

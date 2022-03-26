@@ -1,0 +1,369 @@
+{% extends 'admin/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-copy"></i>
+                            Review of the Customer: {{ customerUserData.bio.fullName }}
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-6">Customer ID: </dt>
+                            <dd class="col-sm-6">{{ customer.token }}</dd>
+                            <dt class="col-sm-6">Full Name:</dt>
+                            <dd class="col-sm-6">{{ customerUserData.bio.fullName }}</dd>
+                            <dt class="col-sm-6">Total Pending Applications:</dt>
+                            <dd class="col-sm-6">{{ customer.totalPendingApps }}</dd>
+                            <dt class="col-sm-6">Total Loans Collected:</dt>
+                            <dd class="col-sm-6">{{ customer.loans.count }}</dd>
+                            <dt class="col-sm-6">Eligible for Personal Loans:</dt>
+                            <dd class="col-sm-6">{{ customer.canApplyPersonal ? 'Yes' : 'No' }}</dd>
+                            <dt class="col-sm-6">Eligible for Business Loans:</dt>
+                            <dd class="col-sm-6">{{ customer.canApplyBusiness ? 'Yes' : 'No' }}</dd>
+                            <br/>
+                            {#<dt class="col-sm-6">Actions: </dt>
+                            {% if loanApplication.closed == false %}
+                                <dd class="col-sm-3">
+                                    <a class="btn btn-success text-white"
+                                       href="{{ path('admin.loans.application_approve', { token: loanApplication.token }) }}">
+                                        Approve Loan
+                                        {{ '  ' }} <span class="fa fa-check"></span>
+                                    </a>
+                                </dd>
+                                <dd class="col-sm-3">
+                                    <a class="btn btn-danger text-white"
+                                       href="{{ path('admin.loans.application_decline', { token: loanApplication.token }) }}">
+                                        Decline Loan
+                                        {{ '  ' }} <span class="fa fa-trash"></span>
+                                    </a>
+                                </dd>
+                            {% endif %}#}
+                            <br>
+
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </div>
+
+    {# Banking Information #}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-money"></i>
+                            Banking Information
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-6">Bank: </dt>
+                            <dd class="col-sm-6">{{ customerBanking.bankName }}</dd>
+                            <dt class="col-sm-6">Account Name:</dt>
+                            <dd class="col-sm-6">{{ customerBanking.accountName }}</dd>
+                            <dt class="col-sm-6">Account Number:</dt>
+                            <dd class="col-sm-6">{{ customerBanking.accountNumber }}</dd>
+                            <br>
+
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </div>
+
+    {# Data Collection - Stage 1: Personal Information #}
+    {#<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-money"></i>
+                            Data Collection - Stage 1: Personal Information
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-6">First Name: </dt>
+                            <dd class="col-sm-6">{{ customerBio.firstName }}</dd>
+                            <dt class="col-sm-6">Last Name:</dt>
+                            <dd class="col-sm-6">{{ customerBio.lastName }}</dd>
+                            <dt class="col-sm-6">Other Name:</dt>
+                            <dd class="col-sm-6">{{ customerBio.otherName is empty ? '(not set)' : customerBio.otherName }}</dd>
+                            <dt class="col-sm-6">Date of Birth: </dt>
+                            <dd class="col-sm-6">{{ customerBio.dateOfBirth ?? '(not set)' }}</dd>
+                            <dt class="col-sm-6">Contact Email:</dt>
+                            <dd class="col-sm-6">{{ customerBio.contactEmail ?? '(not set)' }}</dd>
+                            <dt class="col-sm-6">Bank Verification Number (BVN):</dt>
+                            <dd class="col-sm-6">{{ customerBio.bvn ?? '(not set)' }}</dd>
+                            <dt class="col-sm-6">Residential Address: </dt>
+                            <dd class="col-sm-6">{{ customerBio.homeAddress ?? '(not set)' }}</dd>
+                            <dt class="col-sm-6">State of Residence:</dt>
+                            <dd class="col-sm-6">
+                                {% if customerBio.stateOfResidence != null %}
+                                    {{ customerBio.stateOfResidence.name ?? '(not set)' }}
+                                {% else %}
+                                    {{ '(not set)' }}
+                                {% endif %}
+                            </dd>
+                            <br>
+
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </div>#}
+
+    <div class="container-fluid">
+        {#<div class="row">
+            <div class="col-12 card card-header card-primary">
+                <h4>Data Collection</h4>
+            </div>
+        </div>#}
+        <!-- ./row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary card-tabs">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-stage-1-bio-tab" data-toggle="pill" href="#custom-tabs-stage-1-bio" role="tab" aria-controls="custom-tabs-stage-1-bio" aria-selected="true">Personal Information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-stage-2-kin-tab" data-toggle="pill" href="#custom-tabs-stage-2-kin" role="tab" aria-controls="custom-tabs-one-stage-2-kin" aria-selected="false">Emergency Contacts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-stage-3-external-tab" data-toggle="pill" href="#custom-tabs-stage-3-external" role="tab" aria-controls="custom-tabs-stage-3-external" aria-selected="false">Others</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-one-tabContent">
+                            <div class="tab-pane fade show active" id="custom-tabs-stage-1-bio" role="tabpanel" aria-labelledby="custom-tabs-stage-1-bio-tab">
+                                <div class="card card-primary">
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <dl class="row">
+                                            <dt class="col-sm-6">First Name: </dt>
+                                            <dd class="col-sm-6">{{ customerBio.firstName }}</dd>
+                                            <dt class="col-sm-6">Last Name:</dt>
+                                            <dd class="col-sm-6">{{ customerBio.lastName }}</dd>
+                                            <dt class="col-sm-6">Other Name:</dt>
+                                            <dd class="col-sm-6">{{ customerBio.otherName is empty ? '(not set)' : customerBio.otherName }}</dd>
+                                            <dt class="col-sm-6">Date of Birth: </dt>
+                                            <dd class="col-sm-6">{{ customerBio.dateOfBirth ?? '(not set)' }}</dd>
+                                            <dt class="col-sm-6">Contact Email:</dt>
+                                            <dd class="col-sm-6">{{ customerBio.contactEmail ?? '(not set)' }}</dd>
+                                            <dt class="col-sm-6">Bank Verification Number (BVN):</dt>
+                                            <dd class="col-sm-6">{{ customerBio.bvn ?? '(not set)' }}</dd>
+                                            <dt class="col-sm-6">Residential Address: </dt>
+                                            <dd class="col-sm-6">{{ customerBio.homeAddress ?? '(not set)' }}</dd>
+                                            <dt class="col-sm-6">State of Residence:</dt>
+                                            <dd class="col-sm-6">
+                                                {% if customerBio.stateOfResidence != null %}
+                                                    {{ customerBio.stateOfResidence.name ?? '(not set)' }}
+                                                {% else %}
+                                                    {{ '(not set)' }}
+                                                {% endif %}
+                                            </dd>
+                                            <br>
+
+                                        </dl>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-stage-2-kin" role="tabpanel" aria-labelledby="custom-tabs-one-stage-2-kin-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    <i class="fas fa-money"></i>
+                                                    Emergency Contact 1
+                                                </h3>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-6">Full Name: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.fullName1 }}</dd>
+                                                    <dt class="col-sm-6">Phone Number:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.phoneNumber1 }}</dd>
+                                                    <dt class="col-sm-6">Contact Email:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.emailAddress1 is empty ? '(not set)' : customerKin.emailAddress1 }}</dd>
+                                                    <dt class="col-sm-6">Residential Address: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.residentialAddress1 }}</dd>
+                                                    <dt class="col-sm-6">Relationship Type:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.relationshipStatus1 }}</dd>
+                                                    <br>
+
+                                                </dl>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    <i class="fas fa-money"></i>
+                                                    Emergency Contact 2
+                                                </h3>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-6">Full Name: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.fullName2 }}</dd>
+                                                    <dt class="col-sm-6">Phone Number:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.phoneNumber2 }}</dd>
+                                                    <dt class="col-sm-6">Contact Email:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.emailAddress2 is empty ? '(not set)' : customerKin.emailAddress2 }}</dd>
+                                                    <dt class="col-sm-6">Residential Address: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.residentialAddress2 }}</dd>
+                                                    <dt class="col-sm-6">Relationship Type:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.relationshipStatus2 }}</dd>
+                                                    <br>
+
+                                                </dl>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    <i class="fas fa-money"></i>
+                                                    Emergency Contact 3
+                                                </h3>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-6">Full Name: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.fullName3 }}</dd>
+                                                    <dt class="col-sm-6">Phone Number:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.phoneNumber3 }}</dd>
+                                                    <dt class="col-sm-6">Contact Email:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.emailAddress3 is empty ? '(not set)' : customerKin.emailAddress3 }}</dd>
+                                                    <dt class="col-sm-6">Residential Address: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.residentialAddress3 }}</dd>
+                                                    <dt class="col-sm-6">Relationship Type:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.relationshipStatus3 }}</dd>
+                                                    <br>
+
+                                                </dl>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    <i class="fas fa-money"></i>
+                                                    Emergency Contact 4
+                                                </h3>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-6">Full Name: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.fullName4 }}</dd>
+                                                    <dt class="col-sm-6">Phone Number:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.phoneNumber4 }}</dd>
+                                                    <dt class="col-sm-6">Contact Email:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.emailAddress4 is empty ? '(not set)' : customerKin.emailAddress4 }}</dd>
+                                                    <dt class="col-sm-6">Residential Address: </dt>
+                                                    <dd class="col-sm-6">{{ customerKin.residentialAddress4 }}</dd>
+                                                    <dt class="col-sm-6">Relationship Type:</dt>
+                                                    <dd class="col-sm-6">{{ customerKin.relationshipStatus4 }}</dd>
+                                                    <br>
+
+                                                </dl>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-stage-3-external" role="tabpanel" aria-labelledby="custom-tabs-one-stage-3-external-tab">
+                                <div class="card card-primary">
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <dl class="row">
+                                            <dt class="col-sm-6">Educational Level: </dt>
+                                            <dd class="col-sm-6">{{ customerExternal.educationLevel is empty ? '(not set)' : customerExternal.educationLevel }}</dd>
+                                            <dt class="col-sm-6">Employment Status:</dt>
+                                            <dd class="col-sm-6">{{ customerExternal.employmentStatus is empty ? '(not set)' : customerExternal.employmentStatus }}</dd>
+                                            <dt class="col-sm-6">Weekly / Monthly Income:</dt>
+                                            <dd class="col-sm-6">{{ customerExternal.intervalIncome is empty ? '(not set)' : '₦' ~ customerExternal.intervalIncome|number_format }}</dd>
+                                            <dt class="col-sm-6">Marital Status: </dt>
+                                            <dd class="col-sm-6">{{ customerExternal.maritalStatus is empty ? '(not set)' : customerExternal.maritalStatus }}</dd>
+                                            <dt class="col-sm-6">Number of Children:</dt>
+                                            <dd class="col-sm-6">{{ customerExternal.numberOfChildren is empty ? '(not set)' : customerExternal.numberOfChildren }}</dd>
+                                            <dt class="col-sm-6">Annual Rent:</dt>
+                                            <dd class="col-sm-6">{{ customerExternal.annualRent is empty ? '(not set)' : customerExternal.annualRent }}</dd>
+                                            <dt class="col-sm-6">Outstanding Loan Obligation: </dt>
+                                            <dd class="col-sm-6">{{ customerExternal.outstandingLoanObligation is empty ? '(not set)' : '₦' ~ customerExternal.outstandingLoanObligation|number_format }}</dd>
+                                            <dt class="col-sm-6">State of Residence:</dt>
+                                            <dd class="col-sm-6">
+                                                {% if customerBio.stateOfResidence != null %}
+                                                    {{ customerBio.stateOfResidence.name ?? '(not set)' }}
+                                                {% else %}
+                                                    {{ '(not set)' }}
+                                                {% endif %}
+                                            </dd>
+                                            <br>
+
+                                        </dl>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
