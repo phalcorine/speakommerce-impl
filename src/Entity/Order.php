@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
+use App\Enum\OrderStatusType;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,6 +26,12 @@ class Order
 
     #[ORM\Column(type: 'integer')]
     private int $totalPrice = 0;
+
+    #[ORM\Column(type: 'string', length: 32, nullable: false)]
+    private string $status = OrderStatusType::PENDING;
+
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
+    private string $customerName = '';
 
     // Relations
 
@@ -106,6 +113,30 @@ class Order
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCustomerName(): ?string
+    {
+        return $this->customerName;
+    }
+
+    public function setCustomerName(string $customerName): self
+    {
+        $this->customerName = $customerName;
 
         return $this;
     }

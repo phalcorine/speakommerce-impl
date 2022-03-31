@@ -1,9 +1,9 @@
 module_admin_controllers:
-    resource: ../../src/Module/Admin/Controller/
+    resource: ../src/Modules/Admin/Controller/
     type: annotation
 
 module_storefront_controllers:
-    resource: ../../src/Module/Storefront/Controller/
+    resource: ../src/Modules/Storefront/Controller/
     type: annotation
 
 kernel:

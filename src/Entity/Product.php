@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use App\Entity\Traits\Timestampable;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
+use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[Uploadable]
 class Product
 {
     use Timestampable;
@@ -26,16 +32,21 @@ class Product
     #[ORM\Column(type: 'integer')]
     private ?int $price;
 
-    #[ORM\Column(type: 'string', length: 180, nullable: false)]
-    private ?string $imageFilename;
-
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     private ?string $slug;
 
     // Relations
 
     #[ORM\ManyToOne(targetEntity: ProductCategory::class, inversedBy: 'products')]
-    private $productCategory;
+    private $category;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaFile::class)]
+    private $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -78,18 +89,6 @@ class Product
         return $this;
     }
 
-    public function getImageFilename(): ?string
-    {
-        return $this->imageFilename;
-    }
-
-    public function setImageFilename(string $imageFilename): self
-    {
-        $this->imageFilename = $imageFilename;
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -102,14 +101,44 @@ class Product
         return $this;
     }
 
-    public function getProductCategory(): ?ProductCategory
+    public function getCategory(): ?ProductCategory
     {
-        return $this->productCategory;
+        return $this->category;
     }
 
-    public function setProductCategory(?ProductCategory $productCategory): self
+    public function setCategory(?ProductCategory $category): self
     {
-        $this->productCategory = $productCategory;
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaFile>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(MediaFile $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(MediaFile $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProduct() === $this) {
+                $image->setProduct(null);
+            }
+        }
 
         return $this;
     }

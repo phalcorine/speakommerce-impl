@@ -3,26 +3,30 @@
     <br/>
 
 {% for message in app.flashes('error') %}
-    <div class="alert alert-danger">
-        {{ message }}
-    </div>
+{#    <div class="alert alert-danger">#}
+{#        {{ message }}#}
+{#    </div>#}
+    {{ component('alert', { type: 'danger', message: message }) }}
 {% endfor %}
 
 {% for message in app.flashes('notice') %}
-    <div class="alert alert-info">
-        {{ message }}
-    </div>
+{#    <div class="alert alert-info">#}
+{#        {{ message }}#}
+{#    </div>#}
+    {{ component('alert', { type: 'notice', message: message }) }}
 {% endfor %}
 
 {% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
+{#    <div class="alert alert-success">#}
+{#        {{ message }}#}
+{#    </div>#}
+    {{ component('alert', { type: 'success', message: message }) }}
 {% endfor %}
 
 {% for message in app.flashes('warning') %}
-    <div class="alert alert-warning">
-        {{ message }}
-    </div>
+{#    <div class="alert alert-warning">#}
+{#        {{ message }}#}
+{#    </div>#}
+    {{ component('alert', { type: 'warning', message: message }) }}
 {% endfor %}
 </div>
