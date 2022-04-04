@@ -7,7 +7,7 @@ namespace App\Enum;
 class UserRoleType
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
-    const ROLE_SALES = 'ROLE_SALES';
+    const ROLE_STORE_USER = 'ROLE_STORE_USER';
 
     public static function getRoles()
     {

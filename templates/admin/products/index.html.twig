@@ -1,0 +1,93 @@
+{% extends 'admin/layouts/_base.html.twig' %}
+
+{% block title %} {{ pageTitle }} {% endblock %}
+
+{% block body %}
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {# Course Categories #}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">List: Products</h3>
+
+                        <div>
+                            <a class="btn btn-primary float-right text-white"
+                               href="{{ path('admin.products.new') }}">
+                                Add Product
+                                {{ '  ' }} <span class="fa fa-plus"></span>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                {#<th>Stock Reorder Limit</th>#}
+                                <th>Price (£)</th>
+                                <th>Category</th>
+                                <th style="width: 40px">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set indexer = 1 %}
+                            {% for product in products %}
+                                <tr>
+                                    <td>{{ indexer ~ '.' }}</td>
+                                    <td>{{ product.name }}</td>
+                                    {#<td class="text-center">
+                                        {{ product.stock.quantityOnHand ~ ' ' ~ product.stock.measurement.label }} <br/>
+                                        {% if product.stock.quantityOnHand <= product.stock.restockLimit %}
+                                            <span class="badge badge-danger">Restock!</span>
+                                        {% endif %}
+                                    </td>#}
+                                    <td>{{ product.description }}</td>
+                                    <td>{{ '£' ~ product.price|number_format }}</td>
+                                    <td>{{ product.category.name }}</td>
+                                    <td>
+                                        <a class="btn border-dark " href="{{ path('admin.products.details', { id: product.id }) }}">
+                                            <span class="badge bg-primary">Details</span>
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+
+                                    </td>
+                                    {% set indexer = indexer + 1 %}
+                                </tr>
+                            {% else %}
+
+                                <div align="center" class="align-content-center">
+                                    <p> You have not added any products yet...
+                                        <span class="fa fa-sad-tear"></span>
+                                    </p>
+                                </div>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    {#<div class="card-footer clearfix">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                    </ul>
+                </div>#}
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

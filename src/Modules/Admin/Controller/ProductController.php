@@ -78,10 +78,13 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'new')]
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
     public function new(Request $request, SluggerInterface $slugger)
     {
         $dto = new UpdateProductDto();
+        if($request->request->has('categoryId')) {
+            $dto->setCategoryId($request->query->getInt('categoryId'));
+        }
 
         if($request->isMethod('POST'))
         {
@@ -126,12 +129,17 @@ class ProductController extends AbstractController
             }
         }
 
+        $categories = $this->categoryRepository->findBy([], [
+            'name'  => 'ASC'
+        ]);
+
         $pageTitle = "Add Product";
 
         return $this->render('admin/products/new.html.twig', [
             'sectionTitle'      => $this->sectionTitle,
             'pageTitle'         => $pageTitle,
-            'formDto'           => $dto
+            'formDto'           => $dto,
+            'categories'        => $categories
         ]);
     }
 
@@ -220,7 +228,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('admin.products.index');
         }
 
-        if(!$this->isCsrfTokenValid('delete_' . $product->getId(), $request->request->get('_form_token')))
+        if(!$this->isCsrfTokenValid('delete_product-' . $product->getId(), $request->request->get('_form_token')))
         {
             $this->addFlash(
                 SessionFlashType::ERROR,

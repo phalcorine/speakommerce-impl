@@ -1,0 +1,118 @@
+{% extends 'admin/layouts/_base.html.twig' %}
+
+{% block title %}
+    Category Details - {{ category.name }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-copy"></i>
+                            Category Details: {{ category.name }}
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Name: </dt>
+                            <dd class="col-sm-8">{{ category.name }}</dd>
+                            <dt class="col-sm-4">Description:</dt>
+                            <dd class="col-sm-8">{{ category.description ? category.description : '(not set)' }}</dd>
+                            <dt class="col-sm-4">Number of Products:</dt>
+                            <dd class="col-sm-8">
+                                {{ products|length }}
+                            </dd>
+                            <br>
+                            <dt class="col-sm-4">Actions: </dt>
+                            <dd class="col-sm-8">
+                                <a class="btn btn-primary text-white"
+                                   href="{{ path('admin.product_categories.edit', { id: category.id }) }}">
+                                    Edit Category
+                                    {{ '  ' }} <span class="fa fa-edit"></span>
+                                </a>
+                                <br> &nbsp;
+                                <form method="post" action="{{ path('admin.product_categories.delete', { id: category.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <input type="hidden" name="_form_token" value="{{ csrf_token('delete_category-' ~ category.id) }}">
+                                    <button class="btn btn-danger text-white">Delete Category {{ '  ' }} <span class="fa fa-trash"></span></button>
+                                </form>
+                                {#<a class="btn btn-danger text-white"
+                                   href="{{ path('app.admin.courses.delete', { id: course.id }) }}">
+                                    Delete Course
+                                    {{ '  ' }} <span class="fa fa-trash"></span>
+                                </a>#}
+                            </dd>
+                            <br>
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Chapters content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {# Course Chapters #}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">List: Products</h3>
+
+                        <a class="btn btn-primary float-right text-white"
+                           href="{{ path('admin.products.new', { categoryId: category.id }) }}">
+                            Add Product
+                            {{ '  ' }} <span class="fa fa-edit"></span>
+                        </a>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Price (£)</th>
+                                <th>Last Updated</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set indexer = 1 %}
+                            {% for product in products %}
+                                <tr>
+                                    <td>{{ indexer ~ '.' }}</td>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.description }}</td>
+                                    <td>{{ '£' ~ product.price }}</td>
+                                    <td>{{ product.updatedAt|date('Y-m-d H:i:s') }}</td>
+                                    {% set indexer = indexer + 1 %}
+                                </tr>
+                            {% else %}
+
+                                <div align="center" class="align-content-center">
+                                    <p> You have added any products yet...
+                                        <span class="fa fa-sad-tear"></span>
+                                    </p>
+                                </div>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

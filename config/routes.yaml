@@ -9,3 +9,7 @@ module_storefront_controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+live_component:
+    resource: '@LiveComponentBundle/Resources/config/routing/live_component.xml'
+    # prefix: '/{_locale}'

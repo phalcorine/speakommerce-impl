@@ -15,10 +15,10 @@
                         <h3 class="card-title">List: Product Categories</h3>
 
                         <div>
-                            <a class="btn btn-dark float-right text-white"
+                            <a class="btn btn-primary float-right text-white"
                                href="{{ path('admin.product_categories.new') }}">
                                 Add Category
-                                {{ '  ' }} <span class="fa fa-edit"></span>
+                                {{ '  ' }} <span class="fa fa-plus"></span>
                             </a>
                         </div>
 
@@ -31,8 +31,6 @@
                                 <th style="width: 10px">#</th>
                                 <th>Name</th>
                                 <th>Description</th>
-                                {#<th>Stock Reorder Limit</th>#}
-                                <th>Selling Price (NGN)</th>
                                 <th style="width: 40px">Actions</th>
                             </tr>
                             </thead>
@@ -42,14 +40,7 @@
                                 <tr>
                                     <td>{{ indexer ~ '.' }}</td>
                                     <td>{{ category.name }}</td>
-{#                                    <td class="text-center">#}
-{#                                        {{ product.stock.quantityOnHand ~ ' ' ~ product.stock.measurement.label }} <br/>#}
-{#                                        {% if product.stock.quantityOnHand <= product.stock.restockLimit %}#}
-{#                                            <span class="badge badge-danger">Restock!</span>#}
-{#                                        {% endif %}#}
-{#                                    </td>#}
-                                    {#<td>{{ product.stock.restockLimit }}</td>#}
-                                    <td>{{ category.description }}</td>
+                                    <td>{{ category.description ? category.description : '(not set)' }}</td>
                                     <td>
                                         <a class="btn border-dark " href="{{ path('admin.product_categories.details', { id: category.id }) }}">
                                             <span class="badge bg-primary">Details</span>

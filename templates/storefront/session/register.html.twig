@@ -1,0 +1,45 @@
+{% extends 'storefront/layouts/_session.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="block text-center">
+                    <a class="logo" href="{{ path('app.home.index') }}">
+                        <img src="{{ asset('storefront/images/logo.png') }}" alt="">
+                    </a>
+                    <h2 class="text-center">Create Your Account</h2>
+                    {% include 'admin/partials/shared/header/_alerts.html.twig' %}
+                    <form class="text-left clearfix" action="{{ path('app.session.register') }}" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control"  placeholder="Name"
+                                name="name" id="name" value="{{ formDto.name }}"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control"  placeholder="Email"
+                                name="email" id="email" value="{{ formDto.email }}"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control"  placeholder="Password"
+                                name="password" id="password" value="{{ formDto.password }}"
+                            />
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-main text-center">Sign In</button>
+                        </div>
+                    </form>
+                    <p class="mt-20">Already hava an account ?<a href="{{ path('app.session.login') }}"> Login</a></p>
+                    <p><a href="{{ path('app.session.forgot-password') }}"> Forgot your password?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

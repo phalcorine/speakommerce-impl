@@ -45,6 +45,17 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function getTodaySalesCount()
+    {
+        return $this->createQueryBuilder('ord')
+            ->where('ord.createdAt BETWEEN :startTime AND :endTime')
+            ->setParameter('startTime', date('Y-m-d'))
+            ->setParameter('endTime', date('Y-m-d', strtotime('+1 days')))
+            ->select('COUNT(ord.id) as totalSales')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */

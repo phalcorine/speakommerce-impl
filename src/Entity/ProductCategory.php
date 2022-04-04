@@ -26,6 +26,9 @@ class ProductCategory
     #[ORM\Column(type: 'string', length: 200, nullable: true)]
     private ?string $description;
 
+    #[ORM\Column(type: 'string', length: 200, nullable: false)]
+    private ?string $slug;
+
     // Relations
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
@@ -91,6 +94,18 @@ class ProductCategory
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -65,6 +65,13 @@ class AdminDashboardService
         ], $limit);
     }
 
+    public function getTodaySalesCount()
+    {
+        $value = $this->orderRepository->getTodaySalesCount();
+
+        return $value['totalSales'] ?? 0;
+    }
+
     public function getAllStats(): DashboardStatisticsDto
     {
         return (new DashboardStatisticsDto())
@@ -72,6 +79,7 @@ class AdminDashboardService
             ->setTotalCustomers($this->getTotalCustomersCount())
             ->setTotalOrders($this->getTotalOrdersCount())
             ->setTotalPendingOrders($this->getTotalPendingOrdersCount())
-            ->setTotalProducts($this->getTotalProductsCount());
+            ->setTotalProducts($this->getTotalProductsCount())
+            ->setTotalSalesToday($this->getTodaySalesCount());
     }
 }

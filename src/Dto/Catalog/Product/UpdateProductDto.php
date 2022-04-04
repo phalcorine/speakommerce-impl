@@ -3,16 +3,37 @@
 namespace App\Dto\Catalog\Product;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class UpdateProductDto
 {
-    private ?string $name;
+    #[NotBlank(message: "Name is required", normalizer: 'trim')]
+    #[Length(
+        min: 3,
+        max: 100,
+        normalizer: 'trim',
+        minMessage: "Product Name can not be less than {{ limit }} characters...",
+        maxMessage: "Product Name can not be more than {{ limit }} characters..."
+    )]
+    private ?string $name = null;
 
-    private ?string $description;
+    #[NotBlank(message: "Description is required...", normalizer: 'trim')]
+    #[Length(
+        min: 20,
+        max: 100,
+        normalizer: 'trim',
+        minMessage: "Description can not be less than {{ limit }} characters...",
+        maxMessage: "Description can not be more than {{ limit }} characters..."
+    )]
+    private ?string $description = null;
 
-    private ?int $price;
+    #[Positive(message: 'Price can not be less than 0...')]
+    private ?int $price = 0;
 
-    private ?int $categoryId;
+    #[NotBlank(message: "Category is required...")]
+    private ?int $categoryId = null;
 
     public static function fromRequest(Request $request): UpdateProductDto
     {

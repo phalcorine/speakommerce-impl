@@ -1,0 +1,60 @@
+{% extends 'admin/layouts/_base.html.twig' %}
+
+{% block title %}
+    Product Details - {{ product.name }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-copy"></i>
+                            Product Details: {{ product.name }}
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Name: </dt>
+                            <dd class="col-sm-8">{{ product.name }}</dd>
+                            <dt class="col-sm-4">Description:</dt>
+                            <dd class="col-sm-8">{{ product.description ? product.description : '(not set)' }}</dd>
+                            <dt class="col-sm-4">Price: </dt>
+                            <dd class="col-sm-8">{{ '£' ~ product.price|number_format }}</dd>
+                            <dt class="col-sm-4">Category: </dt>
+                            <dd class="col-sm-8">{{ product.category.name }}</dd>
+                            <br>
+                            <dt class="col-sm-4">Actions: </dt>
+                            <dd class="col-sm-8">
+                                <a class="btn btn-primary text-white"
+                                   href="{{ path('admin.products.edit', { id: product.id }) }}">
+                                    Edit Product Details
+                                    {{ '  ' }} <span class="fa fa-edit"></span>
+                                </a>
+                                <br> &nbsp;
+                                <form method="post" action="{{ path('admin.products.delete', { id: product.id }) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <input type="hidden" name="_form_token" value="{{ csrf_token('delete_product-' ~ product.id) }}">
+                                    <button class="btn btn-danger text-white">Delete Product {{ '  ' }} <span class="fa fa-trash"></span></button>
+                                </form>
+                                {#<a class="btn btn-danger text-white"
+                                   href="{{ path('app.admin.courses.delete', { id: course.id }) }}">
+                                    Delete Course
+                                    {{ '  ' }} <span class="fa fa-trash"></span>
+                                </a>#}
+                            </dd>
+                            <br>
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

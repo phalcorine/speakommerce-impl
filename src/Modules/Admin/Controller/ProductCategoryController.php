@@ -3,6 +3,7 @@
 namespace App\Modules\Admin\Controller;
 
 use App\Dto\Catalog\ProductCategory\UpdateProductCategoryDto;
+use App\Entity\Product;
 use App\Entity\ProductCategory;
 use App\Enum\SessionFlashType;
 use App\Exception\MultipleLogicException;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -65,17 +67,21 @@ class ProductCategoryController extends AbstractController
             return $this->redirectToRoute('admin.product_categories.index');
         }
 
+        /** @var Product[] $products */
+        $products = $category->getProducts();
+
         $pageTitle = "Category Details: " . $category->getName();
 
-        return $this->render('admin/product_categories/index.html.twig', [
+        return $this->render('admin/product_categories/details.html.twig', [
             'sectionTitle'      => $this->sectionTitle,
             'pageTitle'         => $pageTitle,
             'category'          => $category,
+            'products'          => $products
         ]);
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request)
+    public function new(Request $request, SluggerInterface $slugger)
     {
         $dto = new UpdateProductCategoryDto();
 
@@ -103,7 +109,8 @@ class ProductCategoryController extends AbstractController
 
             $category = (new ProductCategory())
                 ->setName($dto->getName())
-                ->setDescription($dto->getDescription());
+                ->setDescription($dto->getDescription())
+                ->setSlug($slugger->slug($dto->getName()));
 
             $this->entityManager->persist($category);
             $this->entityManager->flush();
@@ -123,7 +130,7 @@ class ProductCategoryController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit($id, Request $request): RedirectResponse|Response
+    public function edit($id, Request $request, SluggerInterface $slugger): RedirectResponse|Response
     {
         $category = $this->categoryRepository->find($id);
         if($category == null) {
@@ -161,9 +168,10 @@ class ProductCategoryController extends AbstractController
                 }
             }
 
-            $category = (new ProductCategory())
+            $category
                 ->setName($dto->getName())
-                ->setDescription($dto->getDescription());
+                ->setDescription($dto->getDescription())
+                ->setSlug($slugger->slug($dto->getName()));
 
             $this->entityManager->persist($category);
             $this->entityManager->flush();
@@ -195,11 +203,22 @@ class ProductCategoryController extends AbstractController
             return $this->redirectToRoute('admin.product_categories.index');
         }
 
-        if(!$this->isCsrfTokenValid('delete_' . $category->getId(), $request->request->get('_form_token')))
+        if(!$this->isCsrfTokenValid('delete_category-' . $category->getId(), $request->request->get('_form_token')))
         {
             $this->addFlash(
                 SessionFlashType::ERROR,
                 "Please submit the form properly"
+            );
+
+            return $this->redirectToRoute('admin.product_categories.edit', [
+                'id'    => $id
+            ]);
+        }
+
+        if($category->getProducts()->count() > 0) {
+            $this->addFlash(
+                SessionFlashType::ERROR,
+                "Can not delete category as one or more products are dependent on it..."
             );
 
             return $this->redirectToRoute('admin.product_categories.edit', [

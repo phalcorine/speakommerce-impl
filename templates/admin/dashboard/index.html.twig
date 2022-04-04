@@ -102,7 +102,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Latest Receipts</h3>
+                        <h3 class="card-title">Latest Orders</h3>
 
                         {#<a class="btn btn-primary float-right text-white"
                            href="{{ path('app.sales.invoices.new') }}">
@@ -133,7 +133,7 @@
                                     <td>{{ datePlugin.normalizedTime(entry.createdAt) }}</td>
                                     <td>{{ entry.customerName }}</td>
                                     <td>{{ entry.orderItems|length }}</td>
-                                    <td>{{ '₦' ~ (entry.totalPrice|number_format) }}</td>
+                                    <td>{{ '£' ~ (entry.totalPrice|number_format) }}</td>
                                     <td>
                                         <a class="btn border-dark " href="{{ path('admin.orders.details', { token: entry.token }) }}">
                                             <span class="badge bg-primary">Details</span>

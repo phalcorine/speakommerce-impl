@@ -4,11 +4,13 @@ namespace App\Modules\Storefront\Security;
 
 use App\Entity\AdminUser;
 use App\Entity\User;
+use App\Enum\SessionFlashType;
 use App\Repository\AdminUserRepository;
 use App\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -32,10 +34,14 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     private LoggerInterface $logger;
     private UserPasswordHasherInterface $passwordHasher;
     private UserRepository $userRepository;
+    private RequestStack $requestStack;
+    private Security $security;
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         LoggerInterface $logger,
+        RequestStack $requestStack,
+        Security $security,
         UserPasswordHasherInterface $passwordHasher,
         UserRepository $userRepository
     )
@@ -44,6 +50,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         $this->logger = $logger;
         $this->passwordHasher = $passwordHasher;
         $this->userRepository = $userRepository;
+        $this->requestStack = $requestStack;
+        $this->security = $security;
     }
 
     public function authenticate(Request $request): Passport
@@ -72,6 +80,12 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        $name = $this->security->getUser()->getName();
+        $this->requestStack->getSession()->getFlashBag()->add(
+            SessionFlashType::SUCCESS,
+            "Welcome back, " . $name . "..."
+        );
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }

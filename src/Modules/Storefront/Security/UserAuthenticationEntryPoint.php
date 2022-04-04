@@ -21,7 +21,7 @@ class UserAuthenticationEntryPoint implements AuthenticationEntryPointInterface
     /**
      * @var UrlGeneratorInterface
      */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
     private RequestStack $requestStack;
 
     public function __construct(

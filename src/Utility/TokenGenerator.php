@@ -11,18 +11,13 @@ class TokenGenerator
         return uniqid('PRD_');
     }
 
-    public static function generateSalesInvoiceToken()
+    public static function generateOrderToken()
     {
-        return uniqid('INV_');
-    }
-
-    public static function generateServiceToken()
-    {
-        return uniqid('SRV_');
+        return uniqid('SPK_ORD_');
     }
 
     public static function generateUserToken()
     {
-        return uniqid('USR_');
+        return uniqid('SPK_USER_');
     }
 }

@@ -31,13 +31,7 @@
                             Date Registered
                         </th>
                         <th>
-                            Loans Acquired
-                        </th>
-                        <th>
-                            Personal Loan Limit
-                        </th>
-                        <th>
-                            Business Loan Limit
+                            No. of Orders
                         </th>
                         <th>
                             Action(s)
@@ -56,23 +50,13 @@
                                 {{ customer.token }}
                             </td>
                             <td>
-                                {{ customer.userData.bio.fullName }}
+                                {{ customer.name }}
                             </td>
                             <td>
-                                {{ datePlugin.normalizedDate(customer.createdAt) }}
+                                {{ customer.createdAt|date('Y-m-d H:i:s') }}
                             </td>
                             <td>
-                                {{ customer.loans.count }}
-                            </td>
-                            <td>
-                                {{ '₦' ~ customer.userData.currentPersonalLoanLimit|number_format }}
-                            </td>
-                            <td>
-                                {% if customer.canApplyBusiness %}
-                                    {{ '₦' ~ customer.userData.currentBusinessLoanLimit|number_format }}
-                                {% else %}
-                                    {{ 'Not Eligible' }}
-                                {% endif %}
+                                {{ customer.orders|length }}
                             </td>
                             <td class="project-actions">
                                 <a class="btn btn-primary btn-sm" href="{{ path('admin.customers.details', { token: customer.token }) }}">

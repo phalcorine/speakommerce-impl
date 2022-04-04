@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 //#[Route('/admin', name: 'admin.home.')]
-#[Route('/admin/dashboard', name: 'admin.dashboard.')]
+#[Route('/admin', name: 'admin.dashboard.')]
 class DashboardController extends AbstractController
 {
     private string $sectionTitle = "Dashboard";

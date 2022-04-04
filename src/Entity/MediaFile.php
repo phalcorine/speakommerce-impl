@@ -32,7 +32,7 @@ class MediaFile
 
     // Relations
 
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'image')]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'images')]
     private ?Product $product;
 
     public function getId(): ?int
