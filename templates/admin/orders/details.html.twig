@@ -1,0 +1,108 @@
+{% extends 'admin/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-copy"></i>
+                            Order Details: {{ order.token }}
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-4">Order ID: </dt>
+                            <dd class="col-sm-8">{{ order.token }}</dd>
+                            <dt class="col-sm-4">Customer Name:</dt>
+                            <dd class="col-sm-8">{{ order.customerName }}</dd>
+                            <dt class="col-sm-4">Order Status:</dt>
+                            <dd class="col-sm-8">{{ order.status }}</dd>
+                            <dt class="col-sm-4">Date/Time Ordered:</dt>
+                            <dd class="col-sm-8">
+                                {{ order.createdAt|date('Y-m-d') }}
+                            </dd>
+                            <dt class="col-sm-4">Order Last Updated:</dt>
+                            <dd class="col-sm-8">
+                                {{ order.updatedAt|date('Y-m-d') }}
+                            </dd>
+                            <br>
+                            <dt class="col-sm-4">Actions: </dt>
+                            <dd class="col-sm-8">
+                                <a class="btn btn-primary text-white"
+                                   href="{{ path('admin.orders.change_status', { token: order.token }) }}">
+                                    Change Order Status
+                                    {{ '  ' }} <span class="fa fa-edit"></span>
+                                </a>
+                            </dd>
+                            <br>
+                        </dl>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Chapters content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {# Course Chapters #}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">List: Order Items</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Product</th>
+                                <th>Unit Price (£)</th>
+                                <th>Quantity</th>
+                                <th>Sub Total (£)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set indexer = 1 %}
+                            {% for orderItem in orderItems %}
+                                <tr>
+                                    <td>{{ indexer ~ '.' }}</td>
+                                    <td>{{ orderItem.productName }}</td>
+                                    <td>£{{ orderItem.productPrice|number_format }}</td>
+                                    <td>{{ orderItem.quantity }}</td>
+                                    <td>{{ orderItem.subTotal|number_format }}</td>
+                                    {% set indexer = indexer + 1 %}
+                                </tr>
+                            {% else %}
+
+                                <div align="center" class="align-content-center">
+                                    <p> No order items...
+                                        <span class="fa fa-sad-tear"></span>
+                                    </p>
+                                </div>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

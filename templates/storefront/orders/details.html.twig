@@ -1,0 +1,71 @@
+{% extends 'storefront/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">Order Details</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="{{ path('app.home.index') }}">Home</a></li>
+                            <li><a href="{{ path('app.orders.index') }}">My Orders</a></li>
+                            <li class="active">{{ pageTitle }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="page-wrapper">
+        <div class="cart shopping">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="block">
+                            <div class="product-list">
+                                <form method="post">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="">Item Name</th>
+                                            <th class="">Item Price</th>
+                                            <th class="">Quantity</th>
+                                            <th class="">Sub Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for orderItem in order.orderItems %}
+                                            <tr class="">
+                                                <td class="">
+                                                    <div class="product-info">
+                                                        <img width="80" src="{{ orderItem.product.thumbnailImage }}" alt="{{ orderItem.productName }}" />
+                                                        <a href="#!">{{ orderItem.productName }}</a>
+                                                    </div>
+                                                </td>
+                                                <td class="">£{{ orderItem.productPrice|number_format }}</td>
+                                                <td class="">{{ orderItem.quantity }}</td>
+                                                <td class="">£{{ orderItem.subTotal|number_format }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <p class="pull-right">Total: £{{ order.totalPrice|number_format }}</p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -13,7 +13,7 @@
 {#    <div class="alert alert-info">#}
 {#        {{ message }}#}
 {#    </div>#}
-    {{ component('alert', { type: 'notice', message: message }) }}
+    {{ component('alert', { type: 'info', message: message }) }}
 {% endfor %}
 
 {% for message in app.flashes('success') %}

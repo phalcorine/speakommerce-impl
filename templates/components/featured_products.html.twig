@@ -1,4 +1,5 @@
 {# featured_products #}
+{% set mediaPath = '/media/images/products/' %}
 
 <section class="products related-products section">
     <div class="container">
@@ -13,7 +14,7 @@
                 <div class="col-md-3">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <img class="img-responsive" src="{{ asset('storefront/images/shop/products/product-5.jpg') }}" alt="{{ product.name }}-img" />
+                            <img class="img-responsive" src="{{ mediaPath ~ product.thumbnailImage }}" alt="{{ product.name }}-img" />
                             <div class="preview-meta">
                                 <ul>
                                     <li>

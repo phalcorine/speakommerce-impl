@@ -35,6 +35,9 @@ class Product
     #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     private ?string $slug;
 
+    #[ORM\Column(type: 'string', length: 128, nullable: true)]
+    private ?string $thumbnailImage;
+
     // Relations
 
     #[ORM\ManyToOne(targetEntity: ProductCategory::class, inversedBy: 'products')]
@@ -43,9 +46,13 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: MediaFile::class)]
     private $images;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderItem::class)]
+    private $orderItems;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,6 +146,48 @@ class Product
                 $image->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): self
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems[] = $orderItem;
+            $orderItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): self
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getProduct() === $this) {
+                $orderItem->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getThumbnailImage(): ?string
+    {
+        return $this->thumbnailImage;
+    }
+
+    public function setThumbnailImage(string $thumbnailImage): self
+    {
+        $this->thumbnailImage = $thumbnailImage;
 
         return $this;
     }

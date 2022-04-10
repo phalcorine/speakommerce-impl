@@ -25,12 +25,12 @@ class Cart
             return;
         }
 
-        $cart = (new CartItem())
+        $cartItem = (new CartItem())
             ->setProduct($product)
             ->setProductId($product->getId())
             ->setQuantity($quantity);
 
-        $this->items[] = $cart;
+        $this->items[] = $cartItem;
     }
 
     public function removeFromCart(int $productId)
@@ -38,7 +38,7 @@ class Cart
         /** @var CartItem[] $newItems */
         $newItems = [];
         foreach ($this->items as $item) {
-            if ($item->getProductId() != $productId) {
+            if ($item->getProductId() !== $productId) {
                 $newItems[] = $item;
             }
         }

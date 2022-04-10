@@ -57,4 +57,68 @@
         </div>
     </div>
 
+    <!-- Chapters content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            {# Course Chapters #}
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">List: Products</h3>
+
+                        <a class="btn btn-primary float-right text-white"
+                           href="{{ path('admin.products.add_image_to_product', { productId: product.id }) }}">
+                            Add Image
+                            {{ '  ' }} <span class="fa fa-plus"></span>
+                        </a>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Name</th>
+                                <th>Action(s)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set indexer = 1 %}
+                            {% for mediaFile in mediaFiles %}
+                                <tr>
+                                    <td>{{ indexer ~ '.' }}</td>
+                                    <td>{{ mediaFile.name }}</td>
+                                    <td>
+                                        {% if indexer == 1 %}
+                                            <p>{{ '(can not be deleted)' }}</p>
+                                        {% else %}
+                                            <a class="btn btn-danger btn-sm" href="{{ path('admin.products.remove_image_from_product', { productId: product.id, id: mediaFile.id }) }}">
+                                                <i class="fas fa-folder">
+                                                </i>
+                                                Delete
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    {% set indexer = indexer + 1 %}
+                                </tr>
+                            {% else %}
+
+                                <div align="center" class="align-content-center">
+                                    <p> You have added any image files yet...
+                                        <span class="fa fa-sad-tear"></span>
+                                    </p>
+                                </div>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+
+        </div>
+    </section>
+
 {% endblock %}

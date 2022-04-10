@@ -8,9 +8,11 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('cart_widget')]
+#[AsLiveComponent('cart_widget')]
 class CartWidgetComponent
 {
+    use DefaultActionTrait;
+
     private SessionCartService $cartService;
 
     /** @var CartItem[] */

@@ -11,7 +11,7 @@ use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 
 #[ORM\Entity(repositoryClass: MediaFileRepository::class)]
-#[Uploadable]
+#[ORM\HasLifecycleCallbacks]
 class MediaFile
 {
     use Timestampable;
@@ -21,14 +21,11 @@ class MediaFile
     #[ORM\Column(type: 'integer')]
     private ?int $id;
 
-    #[UploadableField(mapping: 'product_images', fileNameProperty: 'imageName', size: 'imageSize')]
-    private ?File $imageFile;
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 180, nullable: false)]
     private ?string $imageName;
-
-    #[ORM\Column(type: 'integer', nullable: false)]
-    private ?int $imageSize;
 
     // Relations
 
@@ -40,29 +37,16 @@ class MediaFile
         return $this->id;
     }
 
-    /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|UploadedFile|null $imageFile
-     */
-    public function setImageFile(?File $imageFile = null): void
+    public function getName(): ?string
     {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTime();
-        }
+        return $this->name;
     }
 
-    public function getImageFile(): ?File
+    public function setName(string $name): self
     {
-        return $this->imageFile;
+        $this->name = $name;
+
+        return $this;
     }
 
     public function getImageName(): ?string
@@ -73,18 +57,6 @@ class MediaFile
     public function setImageName(string $imageName): self
     {
         $this->imageName = $imageName;
-
-        return $this;
-    }
-
-    public function getImageSize(): ?int
-    {
-        return $this->imageSize;
-    }
-
-    public function setImageSize(int $imageSize): self
-    {
-        $this->imageSize = $imageSize;
 
         return $this;
     }

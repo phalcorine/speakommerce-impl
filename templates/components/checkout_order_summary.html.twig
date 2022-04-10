@@ -1,0 +1,41 @@
+{% set mediaPath = '/media/images/products/' %}
+
+<div class="product-checkout-details" {{ attributes }} data-poll="delay(3000)|$render">
+    <div class="block">
+        <h4 class="widget-title">Order Summary</h4>
+        {% for cartItem in cartItems %}
+            <div class="media product-card">
+                <a class="pull-left" href="{{ path('app.products.details', { slug: cartItem.product.slug }) }}">
+                    <img class="media-object" src="{{ mediaPath ~ cartItem.product.thumbnailImage }}" alt="{{ cartItem.product.name }}" />
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="{{ path('app.products.details', { slug: cartItem.product.slug }) }}">
+                            {{ cartItem.product.name }}
+                        </a>
+                    </h4>
+                    <p class="price">{{ cartItem.quantity }} x £{{ cartItem.product.price|number_format }}</p>
+                    {#<span class="remove">Remove</span>#}
+                    <button class="product-remove" data-action="live#action" data-action-name="removeProductFromCart(productId={{ cartItem.product.id }})">Remove</button>
+                </div>
+            </div>
+        {% endfor %}
+        <ul class="summary-prices">
+            <li>
+                <span>Subtotal:</span>
+                <span class="price">£{{ totalPrice|number_format }}</span>
+            </li>
+            <li>
+                <span>Shipping:</span>
+                <span>Free</span>
+            </li>
+        </ul>
+        <div class="summary-total">
+            <span>Total</span>
+            <span>£{{ totalPrice|number_format }}</span>
+        </div>
+        <div class="verified-icon">
+            <img src="{{ asset('storefront/images/shop/verified.png') }}" alt="verified_logo">
+        </div>
+    </div>
+</div>

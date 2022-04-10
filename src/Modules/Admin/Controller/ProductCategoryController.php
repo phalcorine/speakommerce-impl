@@ -187,6 +187,7 @@ class ProductCategoryController extends AbstractController
             'sectionTitle'      => $this->sectionTitle,
             'pageTitle'         => $pageTitle,
             'formDto'           => $dto,
+            'category'          => $category,
         ]);
     }
 

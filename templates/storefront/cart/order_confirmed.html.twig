@@ -1,0 +1,24 @@
+{% extends 'storefront/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+
+    <section class="page-wrapper success-msg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="block text-center">
+                        <i class="tf-ion-android-checkmark-circle"></i>
+                        <h2 class="text-center">Thank you! For your payment</h2>
+                        <p>{{ orderMessage }}</p>
+                        <a href="{{ path('app.home.index') }}" class="btn btn-main mt-20">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

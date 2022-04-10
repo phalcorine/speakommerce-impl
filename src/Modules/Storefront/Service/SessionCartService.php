@@ -26,17 +26,19 @@ class SessionCartService
     /**
      * @throws \Doctrine\ORM\ORMException
      */
-    public function addItemToCart(int $productId, int $quantity = 0)
+    public function addItemToCart(int $productId, int $quantity = 1)
     {
         $product = $this->entityManager->getReference(Product::class, $productId);
         $cart = $this->getCart();
         $cart->addToCart($product, $quantity);;
+        $this->setCart($cart);
     }
 
     public function removeItemFromCart(int $productId)
     {
         $cart = $this->getCart();
         $cart->removeFromCart($productId);
+        $this->setCart($cart);
     }
 
     public function getCart(): Cart

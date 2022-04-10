@@ -2,6 +2,7 @@
 
 namespace App\Modules\Storefront\Controller;
 
+use App\Enum\SessionFlashType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,18 @@ class HomeController extends AbstractController
         $products = $this->productRepository->findBy([], [
             'name'      => 'ASC'
         ]);
+
+        $product = null;
+        foreach ($products as $productive) {
+            $product = $productive;
+            break;
+        }
+
+//        dd($product->getImages()[0]->getImageName());
+//
+//        foreach ($product->getImages() as $image) {
+//            dd($image);
+//        }
 
         $pageTitle = "Store";
 

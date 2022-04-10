@@ -8,6 +8,7 @@ use App\Enum\SessionFlashType;
 use App\Enum\UserRoleType;
 use App\Utility\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,9 +25,11 @@ class SessionController extends AbstractController
     private ValidatorInterface $validator;
     private UserPasswordHasherInterface $passwordHasher;
     private EntityManagerInterface $entityManager;
+    private LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $entityManager,
+        LoggerInterface $logger,
         UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface $validator
     )
@@ -34,6 +37,7 @@ class SessionController extends AbstractController
         $this->validator = $validator;
         $this->passwordHasher = $passwordHasher;
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
@@ -42,10 +46,12 @@ class SessionController extends AbstractController
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
+        $this->logger->info("About to Login");
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         if($error != null) {
+            $this->logger->error($error->getMessage());
             $this->addFlash(
                 SessionFlashType::ERROR,
                 $error->getMessage()
@@ -119,9 +125,14 @@ class SessionController extends AbstractController
     }
 
     #[Route('/forgot-password', name: 'forgot-password', methods: ['GET', 'POST'])]
-    public function forgotPassword()
+    public function forgotPassword(): RedirectResponse
     {
+        $this->addFlash(
+            SessionFlashType::ERROR,
+            "Email services not configured..."
+        );
 
+        return $this->redirectToRoute('app.session.login');
     }
 
     #[Route('/logout', name: 'logout')]

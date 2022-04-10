@@ -1,0 +1,16 @@
+{% set mediaPath = '/media/images/products/' %}
+
+<tr class="" {{ attributes }}>
+    <td class="">
+        <div class="product-info">
+            <img width="80" src="{{ mediaPath ~ cartItem.product.thumbnailImage }}" alt="{{ cartItem.product.name }}" />
+            <a href="#!">{{ cartItem.product.name }}</a>
+        </div>
+    </td>
+    <td class="">£{{ cartItem.product.price|number_format }}</td>
+    <td class="">{{ cartItem.quantity }}</td>
+    <td class="">£{{ cartItem.subTotal|number_format }}</td>
+    <td class="">
+        <button class="product-remove" data-action="live#action" data-action-name="removeItemFromCart">Remove</button>
+    </td>
+</tr>

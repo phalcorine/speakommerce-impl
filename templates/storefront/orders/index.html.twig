@@ -1,0 +1,63 @@
+{% extends 'storefront/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">My Orders</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="{{ path('app.home.index') }}">Home</a></li>
+                            <li class="active">My Orders</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="user-dashboard page-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dashboard-wrapper user-dashboard">
+                        {% if orders|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total Price</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for orderItem in orders %}
+                                    <tr>
+                                        <td>#{{ orderItem.token }}</td>
+                                        <td>{{ orderItem.createdAt|date('Y-m-d') }}</td>
+                                        <td>{{ orderItem.orderItems|length }}</td>
+                                        <td>£{{ orderItem.totalPrice|number_format }}</td>
+                                        <td><span class="label label-primary">{{ orderItem.status }}</span></td>
+                                        <td><a href="{{ path('app.orders.details', { token: orderItem.token }) }}" class="btn btn-default">View</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                            <p>You have not made any orders yet...</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

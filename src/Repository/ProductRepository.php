@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -44,6 +45,24 @@ class ProductRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function searchByNameOrDescription($term): array
+    {
+        $qb = $this->createQueryBuilder('p');
+        return $qb
+            ->where($qb->expr()->like('p.name', $qb->expr()->literal('%:term%')))
+            ->orWhere($qb->expr()->like('p.description', $qb->expr()->literal('%:term%')))
+            ->setParameter(':term', $term)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 
     // /**
     //  * @return Product[] Returns an array of Product objects

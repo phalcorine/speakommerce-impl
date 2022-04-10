@@ -37,7 +37,7 @@ security:
                 path: admin.session.logout
 
         storefront_auth:
-            pattern: ^/account
+#            pattern: ^/account
             lazy: true
             #            anonymous: false
             provider: app_user_provider
@@ -66,6 +66,8 @@ security:
         - { path: ^/admin/session, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/account, roles: ROLE_STORE_USER }
+        - { path: ^/cart/checkout, roles: ROLE_STORE_USER }
+        - { path: ^/cart/place-order, roles: ROLE_STORE_USER }
         - { path: ^/, roles: PUBLIC_ACCESS }
 
 when@test:

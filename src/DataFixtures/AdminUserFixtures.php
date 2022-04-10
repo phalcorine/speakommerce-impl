@@ -20,7 +20,7 @@ class AdminUserFixtures extends Fixture
     {
         $user = new AdminUser();
         $user->setName('Administrator')
-            ->setEmail('admin@speakommerce.com')
+            ->setEmail('admin@enigma.com')
             ->setPassword($this->passwordHasher->hashPassword($user, 'admin@321'))
             ->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);

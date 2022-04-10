@@ -1,0 +1,16 @@
+<div {{ attributes }}>
+    <div class="product-quantity">
+        <span>Quantity:</span>
+        <div class="product-quantity-slider">
+            <input id="product-quantity" type="number" value="{{ quantity }}"
+                   data-model="quantity" data-action="change->live#update">
+        </div>
+    </div>
+    <button class="btn btn-main mt-20"
+            data-action="live#action" data-action-name="addToCart">
+        Add To Cart
+    </button>
+    {% if isAdded %}
+        <div class="alert alert-success mt-20">Item added to cart!</div>
+    {% endif %}
+</div>

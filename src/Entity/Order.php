@@ -41,6 +41,9 @@ class Order
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     private $user;
 
+    #[ORM\OneToOne(mappedBy: 'order', targetEntity: OrderBillingDetail::class)]
+    private OrderBillingDetail $billingDetail;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -137,6 +140,28 @@ class Order
     public function setCustomerName(string $customerName): self
     {
         $this->customerName = $customerName;
+
+        return $this;
+    }
+
+    public function getBillingDetail(): ?OrderBillingDetail
+    {
+        return $this->billingDetail;
+    }
+
+    public function setBillingDetail(?OrderBillingDetail $billingDetail): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($billingDetail === null && $this->billingDetail !== null) {
+            $this->billingDetail->setOrder(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($billingDetail !== null && $billingDetail->getOrder() !== $this) {
+            $billingDetail->setOrder($this);
+        }
+
+        $this->billingDetail = $billingDetail;
 
         return $this;
     }

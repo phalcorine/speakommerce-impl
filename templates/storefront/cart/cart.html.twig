@@ -1,0 +1,65 @@
+{% extends 'storefront/layouts/_base.html.twig' %}
+
+{% block title %}
+    {{ pageTitle }}
+{% endblock %}
+
+{% block content %}
+
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">Cart</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="{{ path('app.home.index') }}">Home</a></li>
+                            <li class="active">Cart</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="page-wrapper">
+        <div class="cart shopping">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="block">
+                            <div class="product-list">
+                                <form method="post">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="">Item Name</th>
+                                            <th class="">Item Price</th>
+                                            <th class="">Quantity</th>
+                                            <th class="">Sub Total</th>
+                                            <th class="">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for cartItem in cart.items %}
+                                            {{ component('cart_table_row_entry', { cartItem: cartItem }) }}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% if cart.items|length > 0 %}
+                                        <a href="{{ path('app.cart.checkout') }}" class="btn btn-main pull-right">Checkout</a>
+                                    {% else %}
+                                        <p class="text-center">You don't have any items in your cart. Proceed to <a href="{{ path('app.home.index') }}">Shop</a>...</p>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
