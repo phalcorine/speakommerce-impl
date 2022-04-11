@@ -8,6 +8,7 @@ use App\Entity\OrderItem;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Enum\OrderStatusType;
+use App\Modules\Storefront\Model\Cart;
 use App\Modules\Storefront\Model\CheckoutForm;
 use App\Utility\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,6 +76,8 @@ class CustomerOrderService
             $this->entityManager->persist($billingDetail);
 
             $this->entityManager->flush();
+            
+            $this->cartService->setCart(new Cart());
         } catch (\Exception $exception) {
             $this->logger->error("[\App\Modules\Storefront\Service\CustomerOrderService]");
             $this->logger->error("Error Message: {msg}", [
