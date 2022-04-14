@@ -23,7 +23,7 @@
                             <dd class="col-sm-8">{{ category.name }}</dd>
                             <dt class="col-sm-4">Description:</dt>
                             <dd class="col-sm-8">{{ category.description ? category.description : '(not set)' }}</dd>
-                            <dt class="col-sm-4">Number of Products:</dt>
+                            <dt class="col-sm-4">Number of Groceries:</dt>
                             <dd class="col-sm-8">
                                 {{ products|length }}
                             </dd>
@@ -65,11 +65,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List: Products</h3>
+                        <h3 class="card-title">List: Groceries</h3>
 
                         <a class="btn btn-primary float-right text-white"
                            href="{{ path('admin.products.new', { categoryId: category.id }) }}">
-                            Add Product
+                            Add Grocery
                             {{ '  ' }} <span class="fa fa-edit"></span>
                         </a>
                     </div>
@@ -99,7 +99,7 @@
                             {% else %}
 
                                 <div align="center" class="align-content-center">
-                                    <p> You have added any products yet...
+                                    <p> You have added any groceries yet...
                                         <span class="fa fa-sad-tear"></span>
                                     </p>
                                 </div>
